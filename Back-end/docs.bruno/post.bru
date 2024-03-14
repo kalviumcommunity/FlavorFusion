@@ -1,0 +1,23 @@
+meta {
+  name: post
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/addflavourfusion
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "ID": "FF1",
+      "RECIPE": "Biriyani",
+      "INSTRUCTIONS": "do it",
+      "COOKINGTIME": "10min",
+      "SONNUTRITIONALINFORMATION": "fibre-rich",
+      "CREATEDBY": "Raghav"
+  }
+  
+}
