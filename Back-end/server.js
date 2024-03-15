@@ -4,7 +4,8 @@ const bodyParser=require('body-parser')
 const express =require("express")
 const app=express()
 const mongoose=require("mongoose")
-
+const cors = require('cors')
+app.use(cors)
 const {startDatabase,isConnected}=require('./dbCon.js')
 
 const { getRouter, postRouter, deleteRouter, putRouter }=require("./routes/FlavourFusion.routes.js");
