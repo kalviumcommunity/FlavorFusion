@@ -1,12 +1,14 @@
 import React,{useState} from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function CreateRecipe () {
+    const navigate = useNavigate()
     const [id,setId]=useState("")
     const [recipe,setRecipe]=useState("")
     const [instructions,setInstructions]=useState("")
     const [cookingtime,setCookingTime]=useState("")
-    const [nutritinalinformation,setNutritinalInformation]=useState("")
+    const [nutritionalinformation,setNutritionalInformation]=useState("")
     const [createdby,setCreatedBy]=useState("")
     function getCookie(name) {
         let cookieArray = document.cookie.split('; ');
@@ -17,14 +19,14 @@ function CreateRecipe () {
     const Formsubmit=(e)=>{
 
         e.preventDefault();
-        axios.post('https://localhost:3000/addflavourfusion',{
+        axios.post('http://localhost:3000/addflavourfusion',{
         ID:id,
         RECIPE:recipe,
         INSTRUCTIONS:instructions,
         COOKINGTIME:cookingtime,
-        NUTRITIONALINFORMATION:nutritinalinformation,
+        NUTRITIONALINFORMATION:nutritionalinformation,
         CREATEDBY:createdby
-    },{headers:{authorization:`Bearer ${token}`}})
+    })
     .then((response)=>{ console.log(response.data);
         navigate('/')
     })
@@ -38,27 +40,27 @@ function CreateRecipe () {
                     <h2 className="add-user">Add recipe</h2>
                     <div className="div8">
                         <label className="create1">Id</label>
-                        <input type="text" placeholder="Enter Id" className="create2" onChange={(e)=>setId(e.target.value)}/>
+                        <input type="text"  placeholder="Enter Id" className="create2" onChange={(e)=>setId(e.target.value)}/>
                     </div>
                     <div className="div1">
                         <label className="create1">Recipe</label>
-                        <input type="text" placeholder="Enter Name" className="create2" onChange={(e)=>setName(e.target.value)}/>
+                        <input type="text"  placeholder="Enter Recipe" className="create2" onChange={(e)=>setRecipe(e.target.value)}/>
                     </div>
                     <div className="div2">
                         <label className="create1">Instructions</label>
-                        <input type="text" placeholder="Enter Email" className="create2" onChange={(e)=>setEmail(e.target.value)}/>
+                        <input type="text" placeholder="Enter Instructions" className="create2" onChange={(e)=>setInstructions(e.target.value)}/>
                     </div>
                     <div className="div3">
                         <label className="create1">Cookingtime</label>
-                        <input type="text" placeholder="Enter MovieName" className="create2" onChange={(e)=>setMovieName(e.target.value)}/>
+                        <input type="text" placeholder="Enter Cookingtime" className="create2" onChange={(e)=>setCookingTime(e.target.value)}/>
                     </div>
                     <div className="div4">
-                        <label className="create1">Nutritinalinformation</label>
-                        <input type="text" placeholder="Enter SongName" className="create2" onChange={(e)=>setSongName(e.target.value)}/>
+                        <label className="create1">Nutritionalinformation</label>
+                        <input type="text" placeholder="Enter Nutritinalinformation" className="create2" onChange={(e)=>setNutritionalInformation(e.target.value)}/>
                     </div>
                     <div className="div5">
                         <label className="create1">Createdby</label>
-                        <input type="text" placeholder="Enter SongLink" className="create2" onChange={(e)=>setSongLink(e.target.value)}/>
+                        <input type="text" placeholder="Enter Createdby" className="create2" onChange={(e)=>setCreatedBy(e.target.value)}/>
                     </div>
                     <button type="submit" className="create-submit">Submit</button>
                 </form>

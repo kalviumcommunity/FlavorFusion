@@ -3,7 +3,7 @@ const getRouter = express.Router();
 const postRouter = express.Router();
 const putRouter = express.Router();
 const deleteRouter = express.Router();
-const FlavourFusion = require("../Model/User.model.js");
+const FlavourFusion = require("../Model/FlavourFusion.model.js");
 
 require('dotenv').config()
 const Joi=require('joi')
@@ -12,11 +12,21 @@ const schema=Joi.object({
     RECIPE:Joi.string().required(),
     INSTRUCTIONS:Joi.string().required(),
     COOKINGTIME:Joi.string().required(),
-    SONNUTRITIONALINFORMATION:Joi.string().required(),
+    NUTRITIONALINFORMATION:Joi.string().required(),
     CREATEDBY:Joi.string().required()
 })
 
-getRouter.get('/getallflavourfusion', async (req, res) => {
+const authenticateToken = (req, res,next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]
+    if(token==null) return res.sendStatus(401)
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
+      if(err) return res.status(403).send(err)
+      next()
+    })
+  }
+
+getRouter.get('/getallflavourfusion',authenticateToken, async (req, res) => {
     try {
         const flavourfusion = await FlavourFusion.find();
         res.status(200).json(flavourfusion);
@@ -28,7 +38,7 @@ getRouter.get('/getallflavourfusion', async (req, res) => {
     }
 });
 
-getRouter.get('/getflavourfusion/:id',async (req, res) => {
+getRouter.get('/getflavourfusion/:id',authenticateToken,async (req, res) => {
     try {
         const flavourfusion = await FlavourFusion.findOne({ deviceId: req.params.id });
         if (!flavourfusion) {
@@ -45,12 +55,12 @@ getRouter.get('/getflavourfusion/:id',async (req, res) => {
     }
 });
 
-postRouter.post('/addflavourfusion', async (req, res) => {
+postRouter.post('/addflavourfusion',authenticateToken, async (req, res) => {
     const {error, value}=schema.validate(req.body, {abortEarly:false});
     try {
         if(!error){
-        const {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,SONNUTRITIONALINFORMATION,CREATEDBY} = req.body
-        const newFlavourFusion = await FlavourFusion.create({ID,RECIPE,INSTRUCTIONS,COOKINGTIME,SONNUTRITIONALINFORMATION,CREATEDBY});
+        const {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,NUTRITIONALINFORMATION,CREATEDBY} = req.body
+        const newFlavourFusion = await FlavourFusion.create({ID,RECIPE,INSTRUCTIONS,COOKINGTIME,NUTRITIONALINFORMATION,CREATEDBY});
         res.status(201).json(newFlavourFusion);}
         else{
             return res.status(400).send({
@@ -66,16 +76,16 @@ postRouter.post('/addflavourfusion', async (req, res) => {
     }
 });
 
-putRouter.patch('/updateflavourfusion/:id', async (req, res) => {
+putRouter.patch('/updateflavourfusion/:id',authenticateToken, async (req, res) => {
     const {error, value}=schema.validate(req.body, {abortEarly: false});
     try {
         if(!error){
         const flavourfusionId = req.params.id;
-        const {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,SONNUTRITIONALINFORMATION,CREATEDBY} = req.body;
+        const {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,NUTRITIONALINFORMATION,CREATEDBY} = req.body;
 
         const updatedFlavourFusion = await FlavourFusion.findOneAndUpdate(
             { ID: flavourfusionId },
-            { $set: {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,SONNUTRITIONALINFORMATION,CREATEDBY} },
+            { $set: {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,NUTRITIONALINFORMATION,CREATEDBY} },
             { new: true }
         );
 
@@ -100,7 +110,7 @@ putRouter.patch('/updateflavourfusion/:id', async (req, res) => {
 });
 
 
-deleteRouter.delete('/deleteFlavourFusion/:id', async (req, res) => {
+deleteRouter.delete('/deleteFlavourFusion/:id',authenticateToken, async (req, res) => {
     try {
         const flavourfusionId = req.params.id;
         const deleteFlavourFusion = await FlavourFusion.findOneAndDelete({"ID":flavourfusionId});  
