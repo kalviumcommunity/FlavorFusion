@@ -26,7 +26,7 @@ const authenticateToken = (req, res,next) => {
     })
   }
 
-getRouter.get('/getallflavourfusion', async (req, res) => {
+getRouter.get('/getallflavourfusion',authenticateToken, async (req, res) => {
     try {
         const flavourfusion = await FlavourFusion.find();
         res.status(200).json(flavourfusion);
@@ -38,7 +38,7 @@ getRouter.get('/getallflavourfusion', async (req, res) => {
     }
 });
 
-getRouter.get('/getflavourfusion/:id',async (req, res) => {
+getRouter.get('/getflavourfusion/:id',authenticateToken,async (req, res) => {
     try {
         const flavourfusion = await FlavourFusion.findOne({ deviceId: req.params.id });
         if (!flavourfusion) {
@@ -55,7 +55,7 @@ getRouter.get('/getflavourfusion/:id',async (req, res) => {
     }
 });
 
-postRouter.post('/addflavourfusion', async (req, res) => {
+postRouter.post('/addflavourfusion',authenticateToken, async (req, res) => {
     const {error, value}=schema.validate(req.body, {abortEarly:false});
     try {
         if(!error){
@@ -76,7 +76,7 @@ postRouter.post('/addflavourfusion', async (req, res) => {
     }
 });
 
-putRouter.patch('/updateflavourfusion/:id', async (req, res) => {
+putRouter.patch('/updateflavourfusion/:id',authenticateToken, async (req, res) => {
     const {error, value}=schema.validate(req.body, {abortEarly: false});
     try {
         if(!error){
@@ -110,7 +110,7 @@ putRouter.patch('/updateflavourfusion/:id', async (req, res) => {
 });
 
 
-deleteRouter.delete('/deleteFlavourFusion/:id', async (req, res) => {
+deleteRouter.delete('/deleteFlavourFusion/:id',authenticateToken, async (req, res) => {
     try {
         const flavourfusionId = req.params.id;
         const deleteFlavourFusion = await FlavourFusion.findOneAndDelete({"ID":flavourfusionId});  
