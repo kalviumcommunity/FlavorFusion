@@ -3,7 +3,7 @@ const getRouter = express.Router();
 const postRouter = express.Router();
 const putRouter = express.Router();
 const deleteRouter = express.Router();
-const FlavourFusion = require("../Model/User.model.js");
+const FlavourFusion = require("../Model/FlavourFusion.model.js");
 
 require('dotenv').config()
 const Joi=require('joi')
@@ -12,9 +12,19 @@ const schema=Joi.object({
     RECIPE:Joi.string().required(),
     INSTRUCTIONS:Joi.string().required(),
     COOKINGTIME:Joi.string().required(),
-    SONNUTRITIONALINFORMATION:Joi.string().required(),
+    NUTRITIONALINFORMATION:Joi.string().required(),
     CREATEDBY:Joi.string().required()
 })
+
+const authenticateToken = (req, res,next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]
+    if(token==null) return res.sendStatus(401)
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
+      if(err) return res.status(403).send(err)
+      next()
+    })
+  }
 
 getRouter.get('/getallflavourfusion', async (req, res) => {
     try {
@@ -49,8 +59,8 @@ postRouter.post('/addflavourfusion', async (req, res) => {
     const {error, value}=schema.validate(req.body, {abortEarly:false});
     try {
         if(!error){
-        const {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,SONNUTRITIONALINFORMATION,CREATEDBY} = req.body
-        const newFlavourFusion = await FlavourFusion.create({ID,RECIPE,INSTRUCTIONS,COOKINGTIME,SONNUTRITIONALINFORMATION,CREATEDBY});
+        const {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,NUTRITIONALINFORMATION,CREATEDBY} = req.body
+        const newFlavourFusion = await FlavourFusion.create({ID,RECIPE,INSTRUCTIONS,COOKINGTIME,NUTRITIONALINFORMATION,CREATEDBY});
         res.status(201).json(newFlavourFusion);}
         else{
             return res.status(400).send({
@@ -71,11 +81,11 @@ putRouter.patch('/updateflavourfusion/:id', async (req, res) => {
     try {
         if(!error){
         const flavourfusionId = req.params.id;
-        const {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,SONNUTRITIONALINFORMATION,CREATEDBY} = req.body;
+        const {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,NUTRITIONALINFORMATION,CREATEDBY} = req.body;
 
         const updatedFlavourFusion = await FlavourFusion.findOneAndUpdate(
             { ID: flavourfusionId },
-            { $set: {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,SONNUTRITIONALINFORMATION,CREATEDBY} },
+            { $set: {ID,RECIPE,INSTRUCTIONS,COOKINGTIME,NUTRITIONALINFORMATION,CREATEDBY} },
             { new: true }
         );
 

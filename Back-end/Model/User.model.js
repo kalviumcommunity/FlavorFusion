@@ -2,16 +2,12 @@ const mongoose=require("mongoose")
 const Schema=mongoose.schema
 
 const userInfo=mongoose.Schema({
-    ID:{type:String},
-    RECIPE:{type:String},
-    INSTRUCTIONS:{type:String},
-    COOKINGTIME:{type:String},
-    NUTRITIONALINFORMATION:{type:String},
-    CREATEDBY:{type:String},
+    name:{type:String,required:true,unique : true},
+    password:{type:String,required:true}
 },{
     timestamps:true
 });
 
-const Model=mongoose.model("FlavourFusion", userInfo)
+const Model=mongoose.model("User", userInfo)
 
 module.exports=Model
