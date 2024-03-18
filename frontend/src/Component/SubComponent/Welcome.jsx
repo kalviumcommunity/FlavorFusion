@@ -1,5 +1,6 @@
 import {Link} from 'react-router-dom'
 
+
 function Welcome() {
     function getCookie(name) {
         let cookieArray = document.cookie.split('; ');
@@ -7,12 +8,18 @@ function Welcome() {
         return cookie ? cookie.split('=')[1] : null;
     }
     if(getCookie('username')!=undefined) {return(
-        <>
-        <h3>Welcome {getCookie('username')}</h3>
-        <Link to="/logout"><button id='Navbar-button'>Logout</button></Link>
-        </>)}
+        <div className='navbar-container'>
+            <div className='navbar-content'>
+                <h3 className='title'>Welcome {getCookie('username')}</h3>
+                {getCookie('username') !== undefined ? (
+                    <Link to="/logout" id='logout' className='button'>Logout</Link>
+                ) : (
+                    <Link to="/login" className='button'>Login</Link>
+                )}
+            </div>
+        </div>)}
       else{return(
-      <Link to="/login"><button id='Navbar-button'>Login</button></Link>)}}
+      <Link to="/login"><button id='login' className='button'>Login</button></Link>)}}
 
 
 export default Welcome

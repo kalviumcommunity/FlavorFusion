@@ -10,3 +10,109 @@ table,th,td{
     border: 1px solid black;
     border-collapse: collapse;
 }
+.head{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#button{
+    margin-left: 95vw;
+    vertical-align: middle;
+}
+.title {
+    margin-right: 10px;
+    display: inline;
+}
+
+.navbar-container {
+    background-color: #333; /* Example background color */
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    color: black;
+    margin: 0;
+}
+
+.button {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px; 
+    background-color: green; 
+    border-radius: 1vh; 
+}
+#logout{
+    background-color: rgb(156, 2, 2);
+}
+
+.button:hover {
+    background-color: #0056b3; 
+}
+
+.add{
+    background-color: rgb(27, 27, 241);
+    color: white;
+    height: 4vh;
+    width: 5vw;
+    border-radius: 1vh;
+}
+.created{
+    display: flex;
+    justify-content: center;
+}
+.drop{
+    border-radius: 1vh; 
+}
+.all{
+    background-color: green;
+    border-radius: 1vh; 
+    color: white;
+}
+.create{
+    border: 1vh solid black;
+    height: 90vh;
+    width: 30vw;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    margin-left: 35vw;
+ }
+ .create1{
+    display: flex;
+    justify-content: center;
+ }
+ .create2{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height: 4vh;
+    width: 20vw;
+ }
+
+ .add-user, .div1, .div2, .div3, .div4 ,.div5, .div6{
+    margin-bottom: 3vh;
+ }
+ .add-user{
+    margin-left: 4vw;
+    font-size: 2.5vw;
+ }
+ .create-submit{
+    background-color: green;
+    margin-left: 7vw;
+    border-radius: 1vh;
+    height: 4vh;
+    width: 5vw;
+ }
+#update{
+    background-color: green;
+    border-radius: 1vh;
+}
+.delete{
+    background-color: red;
+    border-radius: 1vh;
+}
